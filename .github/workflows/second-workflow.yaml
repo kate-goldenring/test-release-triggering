@@ -1,0 +1,21 @@
+name: Second Workflow
+on:
+  workflow_run:
+    workflows: ["First Workflow"]
+    release:
+      types:
+      - published
+    branches: [main]
+    types: 
+      - completed
+jobs:
+  echo-hello:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
+    steps:
+    - run: echo "🎉 hello!"
+  echo-released:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.event == 'release'
+    steps:
+    - run: echo "🎉 released!"
